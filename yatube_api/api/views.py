@@ -14,7 +14,6 @@ class PostViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
 
     def perform_create(self, serializer):
-        # При создании поста автором автоматически назначается текущий пользователь
         serializer.save(author=self.request.user)
 
 
@@ -32,11 +31,9 @@ class CommentViewSet(viewsets.ModelViewSet):
         # Получаем post_id из параметров URL
         post_id = self.kwargs.get('post_id')
         post = get_object_or_404(Post, pk=post_id)
-        # Возвращаем только комментарии конкретного поста
         return post.comments.all()
 
     def perform_create(self, serializer):
-        # При создании комментария привязываем его к посту и текущему юзеру
         post_id = self.kwargs.get('post_id')
         post = get_object_or_404(Post, pk=post_id)
         serializer.save(author=self.request.user, post=post)

@@ -2,6 +2,7 @@
 from rest_framework import serializers
 from posts.models import Post, Group, Comment
 
+
 class PostSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         slug_field='username',
@@ -24,8 +25,7 @@ class CommentSerializer(serializers.ModelSerializer):
         slug_field='username',
         read_only=True
     )
-    # Поле post не нужно передавать в теле запроса,
-    # мы будем брать его из URL
+
     class Meta:
         model = Comment
         fields = '__all__'
